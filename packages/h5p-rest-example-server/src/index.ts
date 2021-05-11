@@ -128,6 +128,21 @@ const start = async (): Promise<void> => {
         });
     }
 
+    server.use(
+        express.static(
+            path.join(__dirname, '../../h5p-rest-example-client/build')
+        )
+    );
+
+    server.get('/', (req, res) => {
+        res.sendFile(
+            path.join(
+                __dirname,
+                '../../h5p-rest-example-client/build/index.html'
+            )
+        );
+    });
+
     // It is important that you inject a user object into the request object!
     // The Express adapter below (H5P.adapters.express) expects the user
     // object to be present in requests.
