@@ -20,7 +20,7 @@ export default class H5PConfig implements IH5PConfig {
         }
     }
     public ajaxUrl: string = '/ajax';
-    public baseUrl: string = '/h5p';
+    public baseUrl: string = 'http://192.168.128.1:8080/h5p';
     public contentFilesUrl: string = '/content';
     public contentFilesUrlPlayerOverride: string;
     public contentTypeCacheRefreshInterval: number = 1 * 1000 * 60 * 60 * 24;

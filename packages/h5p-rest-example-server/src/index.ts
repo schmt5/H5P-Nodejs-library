@@ -21,6 +21,7 @@ import restExpressRoutes from './routes';
 import User from './User';
 import createH5PEditor from './createH5PEditor';
 import { displayIps, clearTempFiles } from './utils';
+import cors from 'cors';
 
 let tmpDir: DirectoryResult;
 
@@ -155,6 +156,11 @@ const start = async (): Promise<void> => {
     // We now set up the Express server in the usual fashion.
     const server = express();
 
+    server.use(cors({
+        origin: 'http://localhost:3000',
+        credentials: true,
+    }));
+
     server.use(bodyParser.json({ limit: '500mb' }));
     server.use(
         bodyParser.urlencoded({
@@ -226,7 +232,7 @@ const start = async (): Promise<void> => {
     // which endpoints you want to use. In this case we don't pass an options
     // object, which means we get all of them.
     server.use(
-        h5pEditor.config.baseUrl,
+        '/h5p',
         h5pAjaxExpressRouter(
             h5pEditor,
             path.resolve('h5p/core'), // the path on the local disc where the
@@ -246,7 +252,7 @@ const start = async (): Promise<void> => {
     // - Saving content
     // - Deleting content
     server.use(
-        h5pEditor.config.baseUrl,
+        '/h5p',
         restExpressRoutes(
             h5pEditor,
             h5pPlayer,
@@ -259,14 +265,14 @@ const start = async (): Promise<void> => {
     // The LibraryAdministrationExpress routes are REST endpoints that offer
     // library management functionality.
     server.use(
-        `${h5pEditor.config.baseUrl}/libraries`,
+        `/h5p/libraries`,
         libraryAdministrationExpressRouter(h5pEditor)
     );
 
     // The ContentTypeCacheExpress routes are REST endpoints that allow updating
     // the content type cache manually.
     server.use(
-        `${h5pEditor.config.baseUrl}/content-type-cache`,
+        `/h5p/content-type-cache`,
         contentTypeCacheExpressRouter(h5pEditor.contentTypeCache)
     );
 
